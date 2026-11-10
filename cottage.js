@@ -51,21 +51,23 @@ const spots = positions.map(([x, y], index) => {
   button.className = "spot";
   button.style.left = (x / 9) + "%";
   button.style.top = (y / 5.55) + "%";
-  button.addEventListener("click", () => {
-    const previous = state.ornaments[index];
-    stopDecorating();
-    history.push({ index, previous });
-    state.ornaments[index] = previous ? null : selected;
-    if (!previous && !motionPreference.matches) hangOrnament(index, selected);
-    render();
-    const full = state.ornaments.every(Boolean);
-    say(previous ? names[previous] + " ornament taken down." :
-      full ? "Every branch has a little Christmas. Your tree is fully decorated!" :
-      names[selected] + " ornament hung on the tree.");
-  });
+  button.addEventListener("click", () => changeOrnament(index));
   find("#spots").append(button);
   return button;
 });
+
+function changeOrnament(index) {
+  const previous = state.ornaments[index];
+  stopDecorating();
+  history.push({ index, previous });
+  state.ornaments[index] = previous ? null : selected;
+  if (!previous && !motionPreference.matches) hangOrnament(index, selected);
+  render();
+  const full = state.ornaments.every(Boolean);
+  say(previous ? names[previous] + " ornament taken down." :
+    full ? "Every branch has a little Christmas. Your tree is fully decorated!" :
+    names[selected] + " ornament hung on the tree.");
+}
 
 function drawRoomDetails() {
   const needles = find("#needles");
@@ -239,7 +241,7 @@ function render() {
   find("#fireglow").classList.toggle("active", state.fire);
 
   for (const button of all("[data-kind]")) {
-    button.setAttribute("aria-pressed", button.dataset.kind === selected);
+    button.toggleAttribute("data-selected", button.dataset.kind === selected);
   }
   for (const button of all("[data-action][aria-pressed]")) {
     button.setAttribute("aria-pressed", state[button.dataset.action]);
@@ -258,8 +260,13 @@ function say(message) {
 for (const button of all("[data-kind]")) {
   button.addEventListener("click", () => {
     selected = button.dataset.kind;
-    render();
-    say(names[selected] + " selected. Choose a gold dot on the tree.");
+    const emptySpot = state.ornaments.indexOf(null);
+    if (emptySpot !== -1) {
+      changeOrnament(emptySpot);
+    } else {
+      render();
+      say("The tree is full. Tap a hung ornament to make room.");
+    }
   });
 }
 
