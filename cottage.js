@@ -33,6 +33,12 @@ try {
 
 let selected = "cranberry";
 const history = [];
+const restX = 246;
+const floorY = 484;
+const motionPreference = matchMedia("(prefers-reduced-motion: reduce)");
+let animationFrame = 0;
+let carriedSpot = null;
+
 const spots = positions.map(([x, y], index) => {
   const button = document.createElement("button");
   button.type = "button";
@@ -41,8 +47,10 @@ const spots = positions.map(([x, y], index) => {
   button.style.top = (y / 5.55) + "%";
   button.addEventListener("click", () => {
     const previous = state.ornaments[index];
+    stopDecorating();
     history.push({ index, previous });
     state.ornaments[index] = previous ? null : selected;
+    if (!previous && !motionPreference.matches) hangOrnament(index, selected);
     render();
     const full = state.ornaments.every(Boolean);
     say(previous ? names[previous] + " ornament taken down." :
@@ -121,6 +129,80 @@ function drawOrnament(kind, x, y, parent) {
   svg("path", { d: "M-9 4q9 6 18 0", stroke: "#ffdfac", "stroke-width": 1.3, fill: "none", opacity: .66 }, group);
 }
 
+function poseDecorator(x, y, handX, handY) {
+  find("#decorator").setAttribute("transform", "translate(" + x + " " + y + ")");
+  const elbowX = (12 + handX) / 2 + 9;
+  const elbowY = (-111 + handY) / 2 + 10;
+  const sleeve = "M12 -111Q" + elbowX + " " + elbowY + " " + handX + " " + handY;
+  find("#decorator-sleeve").setAttribute("d", sleeve);
+  find("#decorator-arm").setAttribute("d", sleeve);
+  find("#decorator-hand").setAttribute("cx", handX);
+  find("#decorator-hand").setAttribute("cy", handY);
+}
+
+function stopDecorating() {
+  cancelAnimationFrame(animationFrame);
+  carriedSpot = null;
+  poseDecorator(restX, floorY, 24, -78);
+  find("#carried-ornament").replaceChildren();
+  find("#step-ladder").replaceChildren();
+}
+
+function hangOrnament(index, kind) {
+  const [targetX, targetY] = positions[index];
+  const standingX = targetX - 50;
+  const standingY = Math.min(floorY, targetY + 157);
+  const ladder = find("#step-ladder");
+  if (standingY < floorY) {
+    const height = floorY - standingY;
+    const rails = "M" + (standingX - 42) + " " + floorY + "l21 " + -height
+      + "h43l22 " + height + "M" + (standingX + 22) + " " + standingY
+      + "l38 " + height;
+    svg("path", { d: rails, stroke: "#372820", "stroke-width": 10 }, ladder);
+    svg("path", { d: rails, stroke: "#a87850", "stroke-width": 6 }, ladder);
+    for (let step = 27; step < height - 9; step += 27) {
+      const halfWidth = 22 + 21 * step / height;
+      svg("path", {
+        d: "M" + (standingX - halfWidth) + " " + (standingY + step) + "h" + 2 * halfWidth,
+        stroke: "#c09465", "stroke-width": 5
+      }, ladder);
+    }
+    ladder.setAttribute("opacity", 0);
+  }
+
+  carriedSpot = index;
+  const held = find("#carried-ornament");
+  drawOrnament(kind, 0, 0, held);
+  const start = performance.now();
+  const ease = (value) => {
+    const t = Math.max(0, Math.min(value, 1));
+    return t * t * (3 - 2 * t);
+  };
+  const animate = (now) => {
+    const elapsed = now - start;
+    const walk = ease(elapsed / 400) * (1 - ease((elapsed - 1130) / 420));
+    const climb = ease((elapsed - 250) / 330) * (1 - ease((elapsed - 940) / 340));
+    const reach = ease((elapsed - 530) / 260) * (1 - ease((elapsed - 830) / 180));
+    const x = restX + (standingX - restX) * walk;
+    const y = floorY + (standingY - floorY) * climb;
+    const handX = 24 + (targetX - standingX - 24) * reach;
+    const handY = -78 + (targetY - standingY + 78) * reach;
+    poseDecorator(x, y, handX, handY);
+    ladder.setAttribute("opacity", ease(elapsed / 200) * (1 - ease((elapsed - 1250) / 270)));
+    if (carriedSpot !== null) {
+      held.setAttribute("transform", "translate(" + (x + handX) + " " + (y + handY) + ")");
+      if (elapsed >= 790) {
+        carriedSpot = null;
+        held.replaceChildren();
+        render();
+      }
+    }
+    if (elapsed < 1550) animationFrame = requestAnimationFrame(animate);
+    else stopDecorating();
+  };
+  animationFrame = requestAnimationFrame(animate);
+}
+
 function render() {
   const artwork = find("#ornaments");
   artwork.replaceChildren();
@@ -131,7 +213,7 @@ function render() {
     button.setAttribute("aria-label", kind
       ? "Remove " + names[kind] + " ornament from spot " + (index + 1)
       : "Hang " + names[selected] + " ornament at spot " + (index + 1));
-    if (kind) drawOrnament(kind, ...positions[index], artwork);
+    if (kind && index !== carriedSpot) drawOrnament(kind, ...positions[index], artwork);
   });
   if (state.star) {
     svg("circle", { cx: 441, cy: 62, r: 66, fill: "url(#glow)" }, artwork);
@@ -195,6 +277,7 @@ for (const button of all("[data-action]")) {
 }
 
 find("#undo").addEventListener("click", () => {
+  stopDecorating();
   const { index, previous } = history.pop();
   state.ornaments[index] = previous;
   render();
@@ -202,6 +285,7 @@ find("#undo").addEventListener("click", () => {
 });
 
 find("#reset").addEventListener("click", () => {
+  stopDecorating();
   state = initial();
   selected = "cranberry";
   history.length = 0;

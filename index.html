@@ -94,6 +94,30 @@
         <ellipse cx="163" cy="451" rx="9" ry="4" fill="#ad6a45"/><ellipse cx="181" cy="452" rx="8" ry="4" fill="#b77b4d"/>
         <path d="M112 432h24v18q-12 9-24 0Zm24 3h6q10 6-6 11" fill="#a6514e" stroke="#a6514e" stroke-width="3"/>
         <path d="M119 427q-7-7 0-14m9 14q-7-7 0-14" fill="none" stroke="#f8e2b6" stroke-opacity=".55" stroke-width="2"/>
+        <g id="step-ladder" fill="none" stroke-linecap="round" aria-hidden="true"></g>
+        <g id="decorator" transform="translate(246 484)">
+          <ellipse cx="0" cy="2" rx="31" ry="7" fill="#241b18" opacity=".38"/>
+          <path d="M-12-59 -15-7M11-59 13-7" stroke="#303c42" stroke-width="18" stroke-linecap="round"/>
+          <path d="M-15-51 -17-11M10-51 11-13" stroke="#697078" stroke-width="2" opacity=".7"/>
+          <path d="M-25-12h17v10h-24q-2-7 7-10Zm29 0h17l12 7v3H4Z" fill="#3a2729"/>
+          <path d="M-31-2H-8m13 0h28" stroke="#cb9d75" stroke-width="2" stroke-linecap="round"/>
+          <path d="M-16-111q-14 19-9 47" fill="none" stroke="#763a42" stroke-width="17" stroke-linecap="round"/>
+          <circle cx="-25" cy="-61" r="7" fill="#bd805d"/>
+          <path d="M-22-120q18-12 37-2 10 7 9 24l-1 36q-21 11-46-1l-4-42q0-10 5-15Z" fill="#a75556" stroke="#68353c" stroke-width="2"/>
+          <path d="M-24-105q25 10 47-1m-47 8q24 10 47 0m-45 29q26 7 44 0" stroke="#edbf9b" stroke-width="2.5" opacity=".65" fill="none"/>
+          <path d="m-19-101 5-4 5 6 5-5 6 5 6-5 5 3" stroke="#f0ceab" stroke-width="2" fill="none"/>
+          <path d="M-9-133h21v17H-9z" fill="#ba805f"/>
+          <path d="M-17-128q17 8 35 0l2 12q-20 9-40-2Z" fill="#e5b76c"/>
+          <path d="m-14-121-12 26 9-1 11-23" fill="#cf9a57"/>
+          <path d="M-15-158q14-20 32-3l4 14 6 7-7 3q-2 14-16 13-14-2-20-17Z" fill="#cf9168" stroke="#704433" stroke-width="1.5"/>
+          <path d="M-18-142q-12-16 2-29 15-12 31-3 7 4 7 14-6 4-17 0-2 13-13 14l-1 13q-9-1-9-9Z" fill="#42282a"/>
+          <path d="M-20-164q5-11 15-12 14-3 22 6m-31 7q8-7 15-8" stroke="#79513c" stroke-width="2" fill="none" stroke-linecap="round"/>
+          <circle cx="15" cy="-145" r="1.4" fill="#412c26"/>
+          <path id="decorator-sleeve" d="M12-111Q32-95 24-78" stroke="#723640" stroke-width="17" stroke-linecap="round" fill="none"/>
+          <path id="decorator-arm" d="M12-111Q32-95 24-78" stroke="#b96161" stroke-width="13" stroke-linecap="round" fill="none"/>
+          <circle id="decorator-hand" cx="24" cy="-78" r="6" fill="#d49771"/>
+        </g>
+        <g id="carried-ornament"></g>
         <path d="M0 0h900v555H0z" fill="url(#grain)" pointer-events="none"/>
       </svg>
       <div class="scene-label"><span></span> INSIDE THE COTTAGE</div>
@@ -105,7 +129,7 @@
     <aside class="panel" aria-label="Christmas activities">
       <p class="eyebrow chapter">01 / MAKE IT YOURS</p>
       <h2>Trim the tree</h2>
-      <p class="instruction">Pick a decoration, then tap a gold dot on the tree. Tap a placed ornament to take it down.</p>
+      <p class="instruction">Pick a decoration and tap a gold dot to have the decorator hang it. Tap a placed ornament to take it down.</p>
       <div class="tray" role="group" aria-label="Choose an ornament">
         <button type="button" data-kind="cranberry" aria-pressed="true"><i class="icon cranberry" aria-hidden="true"></i>Cranberry</button>
         <button type="button" data-kind="gold" aria-pressed="false"><i class="icon gold" aria-hidden="true"></i>Gold</button>
