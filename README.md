@@ -11,3 +11,5 @@ Open `index.html` in a browser. The site uses HTML, CSS, JavaScript, and origina
 ## Play online
 
 [Visit Christmas Eve at Pine Cottage](https://antoniarolo.github.io/christmas-eve-at-pine-cottage/)
+
+Start in the snowy pine grove. Swing the axe three times, carry the tree to the cottage, and set it in its stand before decorating. Use **Start Christmas Eve over** to replay the journey.

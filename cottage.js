@@ -14,7 +14,7 @@ const positions = [
   [345, 292], [411, 300], [481, 303], [548, 301], [375, 364], [509, 370]
 ];
 const names = { cranberry: "Cranberry", gold: "Gold", cane: "Candy cane", snowflake: "Snowflake" };
-const initial = () => ({ ornaments: positions.map(() => null), lights: false, star: false, fire: false, snow: true });
+const initial = () => ({ journey: 0, ornaments: positions.map(() => null), lights: false, star: false, fire: false, snow: true });
 const key = "pine-cottage-v1";
 let state = initial();
 try {
@@ -25,6 +25,11 @@ try {
     }
     if (Array.isArray(saved.ornaments)) {
       state.ornaments = positions.map((_, i) => Object.hasOwn(names, saved.ornaments[i]) ? saved.ornaments[i] : null);
+    }
+    if (Number.isInteger(saved.journey) && saved.journey >= 0 && saved.journey <= 5) {
+      state.journey = saved.journey;
+    } else if (state.ornaments.some(Boolean) || state.lights || state.star || state.fire) {
+      state.journey = 5;
     }
   }
 } catch {
@@ -38,6 +43,7 @@ const floorY = 484;
 const motionPreference = matchMedia("(prefers-reduced-motion: reduce)");
 let animationFrame = 0;
 let carriedSpot = null;
+let journeyRun = null;
 
 const spots = positions.map(([x, y], index) => {
   const button = document.createElement("button");
@@ -204,6 +210,7 @@ function hangOrnament(index, kind) {
 }
 
 function render() {
+  renderJourney();
   const artwork = find("#ornaments");
   artwork.replaceChildren();
   const count = state.ornaments.filter(Boolean).length;
@@ -285,13 +292,138 @@ find("#undo").addEventListener("click", () => {
 });
 
 find("#reset").addEventListener("click", () => {
+  const interrupted = journeyRun;
+  journeyRun = null;
+  if (interrupted) interrupted.forEach((animation) => animation.cancel());
   stopDecorating();
   state = initial();
   selected = "cranberry";
   history.length = 0;
   render();
-  say("The cottage is ready for a fresh Christmas Eve.");
+  say("A fresh snowfall has covered the path to the grove.");
+  find("#journey-action").focus({ preventScroll: true });
+});
+
+const journeyStages = [
+  {
+    id: "cut", scene: "THE PINE GROVE", chapter: "01 / THE PINE GROVE",
+    title: "Find your tree", action: "Swing the axe",
+    instruction: "There’s a little pine waiting in the clearing. Swing the axe three times to bring it down."
+  },
+  {
+    id: "carry", scene: "THE PATH HOME", chapter: "02 / THE PATH HOME",
+    title: "Bring it home", action: "Carry the tree inside",
+    instruction: "Follow the snowy path to the glowing cottage with your freshly cut tree."
+  },
+  {
+    id: "stand", scene: "INSIDE THE COTTAGE", chapter: "03 / INSIDE THE COTTAGE",
+    title: "Stand it up", action: "Set up the tree",
+    instruction: "The tree is inside. Lift it upright and settle the trunk into the stand."
+  },
+  { id: "decorate", scene: "INSIDE THE COTTAGE" }
+];
+
+const journeyMessages = ["A fresh snowfall has covered the path to the grove.", "One chop. The pine sways.", "Two chops. One more will do it.",
+    "Timber! The tree is ready to carry.", "You made it inside. Time to set up the tree.",
+    "The tree is in its stand. Pick an ornament to get started."];
+
+function journeyStageIndex() {
+  return Math.max(0, state.journey - 2);
+}
+
+function renderJourney() {
+  const index = journeyStageIndex();
+  const stage = journeyStages[index];
+  const scene = find(".scene");
+  scene.dataset.stage = stage.id;
+  scene.setAttribute("aria-label", stage.scene);
+  find("#scene-name").textContent = stage.scene;
+  find("#notch").setAttribute("opacity", Math.min(state.journey / 2, 1));
+  all("#journey-steps li").forEach((step, i) => {
+    if (index === i) step.setAttribute("aria-current", "step");
+    else step.removeAttribute("aria-current");
+  });
+
+  const decorating = stage.id === "decorate";
+  find("#journey-panel").hidden = decorating;
+  find("#decorate-panel").hidden = !decorating;
+  const action = find("#journey-action");
+  action.setAttribute("aria-disabled", journeyRun !== null);
+  if (decorating) return;
+  find("#journey-chapter").textContent = stage.chapter;
+  find("#journey-title").textContent = stage.title;
+  find("#journey-instruction").textContent = stage.instruction;
+  action.textContent = stage.action;
+  find("#chop-count").hidden = stage.id !== "cut";
+  find("#chop-progress").hidden = stage.id !== "cut";
+  find("#chop-count").textContent = state.journey + " / 3 chops";
+  find("#chop-progress").value = state.journey;
+}
+
+function drawGrove() {
+  const grove = find("#grove");
+  for (let i = 0; i < 28; i++) {
+    const height = 75 + i * 29 % 135;
+    svg("use", {
+      href: "#fir", x: -18 + i * 43 % 918, y: 389 - height + i % 5 * 5,
+      width: height / 2, height, color: ["#3a6063", "#4d7275", "#294e54"][i % 3]
+    }, grove);
+  }
+  for (let i = 0; i < 75; i++) {
+    const snow = svg("circle", {
+      class: "snowflake", cx: 3 + i * 67.3 % 895, cy: 7 + i * 79.1 % 528,
+      r: 1 + i % 5 * .48, fill: "#f9f4df", opacity: .35 + i % 5 * .12
+    }, find("#forest-snow"));
+    snow.style.setProperty("--speed", (15 + i % 9) + "s");
+    snow.style.setProperty("--delay", (-i * 1.27) + "s");
+  }
+}
+
+find("#journey-action").addEventListener("click", async () => {
+  if (journeyRun || state.journey === 5) return;
+  const index = journeyStageIndex();
+  const run = [];
+  journeyRun = run;
+  renderJourney();
+  const animate = (selector, frames, duration, delay = 0) => {
+    if (motionPreference.matches) return;
+    run.push(find(selector).animate(frames, { duration, delay, fill: "both", easing: "ease-in-out" }));
+  };
+
+  if (index === 0) {
+    animate("#axe-swing", [{ transform: "rotate(0deg)" }, { transform: "rotate(-108deg)" },
+      { transform: "rotate(14deg)", offset: .72 }, { transform: "rotate(0deg)" }], 510);
+    animate("#forest-walker", [{ transform: "translateX(0)" }, { transform: "translateX(-10px)" },
+      { transform: "translateX(9px)", offset: .72 }, { transform: "translateX(0)" }], 510);
+    animate("#chips", [{ opacity: 0 }, { opacity: 1 }, { opacity: 0, transform: "translate(15px,-24px)" }], 350, 360);
+    const angle = state.journey === 2 ? 76 : 3 + state.journey * 3;
+    animate("#forest-fall", [{ transform: "rotate(0deg)" }, { transform: "rotate(" + angle + "deg)" },
+      { transform: state.journey === 2 ? "rotate(76deg)" : "rotate(0deg)" }], state.journey === 2 ? 960 : 300, 365);
+  } else if (index === 1) {
+    animate("#forest-fall", [{ transform: "rotate(76deg)" }, { transform: "translate(-63px,-51px) rotate(72deg)" }], 590);
+    animate("#forest-trip", [{ transform: "translate(0,0)" }, { transform: "translate(140px,-6px)" },
+      { transform: "translate(255px,-26px)" }, { transform: "translate(447px,-48px)", opacity: .3 }], 1500, 510);
+    animate("#forest-walker", Array.from({ length: 13 }, (_, step) =>
+      ({ transform: "translateY(" + (step % 2 ? -8 : 0) + "px)" })), 1470, 540);
+  } else {
+    animate("#cottage-tree", [{ transform: "translate(-12px,-30px) rotate(-39deg)" },
+      { transform: "translate(-4px,-18px) rotate(5deg)", offset: .8 }, { transform: "rotate(0deg)" }], 1070);
+    animate("#cottage-person", [{ transform: "translateX(83px)" }, { transform: "translateX(104px)", offset: .55 },
+      { transform: "translateX(0)" }], 1220);
+  }
+
+  await Promise.allSettled(run.map((animation) => animation.finished));
+  if (journeyRun !== run) return;
+  run.forEach((animation) => animation.cancel());
+  journeyRun = null;
+  state.journey += 1;
+  render();
+  say(journeyMessages[state.journey]);
+  if (state.journey === 5) find("[data-kind]").focus({ preventScroll: true });
 });
 
 drawRoomDetails();
+drawGrove();
 render();
+say(journeyMessages[state.journey]);
+

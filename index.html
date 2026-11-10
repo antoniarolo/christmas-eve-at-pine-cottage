@@ -6,8 +6,8 @@
 <meta name="theme-color" content="#f8f1e3">
 <meta name="description" content="Spend Christmas Eve in a snowy cottage. Decorate the tree, light a fire, and discover little holiday surprises.">
 <title>Christmas Eve at Pine Cottage</title>
-<link rel="stylesheet" href="style.css">
-<script src="cottage.js" defer></script>
+<link rel="stylesheet" href="style.css?v=journey">
+<script src="cottage.js?v=journey" defer></script>
 </head>
 <body>
 <header class="top"><span class="brand"><span aria-hidden="true">✳</span> PINE COTTAGE</span><span class="edition">THE WINTER EDITION <span aria-hidden="true">✦</span> NO. 01</span></header>
@@ -15,10 +15,10 @@
   <div class="intro">
     <p class="eyebrow"><span></span> DECEMBER 24 <span></span></p>
     <h1>Christmas Eve <em>at Pine Cottage</em></h1>
-    <p>Snow is falling outside. Come in and make yourself a little Christmas.</p>
+    <p>From a snowy pine grove to a tree full of Christmas lights.</p>
   </div>
   <div class="experience">
-    <section class="scene" aria-label="The cottage living room">
+    <section class="scene" data-stage="cut" aria-label="The snowy pine grove">
       <svg id="room" viewBox="0 0 900 555" aria-hidden="true" xmlns="http://www.w3.org/2000/svg">
         <defs>
           <linearGradient id="wall" x2="1" y2="1" gradientUnits="objectBoundingBox"><stop stop-color="#233e34"/><stop offset=".6" stop-color="#132b26"/><stop offset="1" stop-color="#20352c"/></linearGradient>
@@ -31,10 +31,17 @@
           <pattern id="stone" width="94" height="44" patternUnits="userSpaceOnUse"><path d="M0 0h94M0 22h94M46 0v22M20 22v22M77 22v22" stroke="#3f2824" stroke-opacity=".3" stroke-width="2"/></pattern>
           <pattern id="grain" width="9" height="11" patternUnits="userSpaceOnUse"><path d="M1 2h1m5 7h1m-3-4h1" stroke="#f7e4b5" opacity=".12"/></pattern>
           <clipPath id="window"><path d="M60 291V143a89 89 0 0 1 178 0v148Z"/></clipPath>
-          <path id="treeShape" d="M441 62Q418 121 375 152l28-1q-34 42-75 60l38-3q-44 49-89 69l58-4q-46 53-88 67l53 1q-47 47-92 67 84 21 143 5l-7 13q59 10 93-2 55 17 110-1l-12-13q67 15 124-6-54-20-92-65l47 3q-49-28-86-70l55 2q-46-19-89-65l37 1q-44-21-71-57l23 1q-49-40-62-92Z"/>
+          <path id="treeShape" d="M441 62Q418 121 375 152l28-1q-34 42-75 60l38-3q-44 49-89 69l58-4q-46 53-88 67l53 1q-47 47-92 67 84 21 143 5l-7 13q59 10 93-2 55 17 110-1l-12-13q67 15 124-6-54-20-92-65l47 3q-49-28-86-70l55 2q-46-19-89-65l37 1q-44-21-71-57l23 1Q452 119 441 62Z"/>
           <clipPath id="tree"><use href="#treeShape"/></clipPath>
           <symbol id="fir" viewBox="0 0 60 120"><path d="M30 0 18 30h8L10 57h11L4 85h14L0 112h27v8h6v-8h27L42 85h14L39 57h11L34 30h8Z" fill="currentColor"/></symbol>
           <symbol id="giftBox" viewBox="0 0 100 82"><path d="M6 29h88v53H6Z" fill="currentColor"/><path d="M2 19h96v15H2Z" fill="currentColor"/><path d="M2 31h96v4H2Z" fill="#301b22" opacity=".28"/><path d="M44 19h12v63H44Z" fill="#edc77e"/><path d="M50 19C19 18 24-9 39 5q10 9 11 14Zm0 0C81 18 76-9 61 5q-10 9-11 14Z" fill="none" stroke="#edc77e" stroke-width="4"/></symbol>
+<g id="woodland-pine" transform="translate(400 447)">
+  <g transform="scale(.87) translate(-441 -448)">
+    <path d="M427 389h28l2 61h-31Z" fill="#8c6449"/>
+    <use href="#treeShape" fill="url(#pine)" stroke="#183d35" stroke-width="5" stroke-linejoin="round"/>
+    <path d="M441 82q-9 34-43 58l17-5m3 33q-22 21-55 35l47-12m-21 46q-36 24-68 31l48-9m-20 44q-37 23-66 31l48-7m1 37q-42 24-72 29l46-3m150-242q24 22 44 27m-41 32q33 24 60 34m-34 25q33 24 64 31m-37 28q44 30 85 38m-51 14q42 22 70 24" fill="none" stroke="#bacdc1" stroke-width="6" stroke-linecap="round" opacity=".8"/>
+  </g>
+</g>
         </defs>
         <path fill="url(#wall)" d="M0 0h900v555H0z"/>
         <path fill="url(#planks)" d="M0 0h900v449H0z"/>
@@ -75,8 +82,8 @@
         <g fill="#d77462"><circle cx="720" cy="169" r="4"/><circle cx="776" cy="161" r="4"/><circle cx="796" cy="197" r="4"/><circle cx="709" cy="202" r="3"/></g>
         <path d="M652 299v26q-19 5-15 15 4 12 24 5 16-5 15-13v-33Zm182 0v26q-19 5-15 15 4 12 24 5 16-5 15-13v-33Z" fill="#9c4949"/>
         <path d="M649 299h30v9h-30zm182 0h30v9h-30z" fill="#e6c8a3"/>
+        <g id="cottage-tree">
         <path d="M426 387h32l4 63h-41Z" fill="#7d5942"/>
-        <path d="M397 440h91l-9 35h-72z" fill="#8d6145"/><path d="M393 438h99v9h-99z" fill="#ac7c58"/>
         <use href="#treeShape" fill="url(#pine)" stroke="#142f27" stroke-width="5" stroke-linejoin="round"/>
         <g clip-path="url(#tree)">
           <g id="needles"></g>
@@ -84,6 +91,8 @@
           <g id="lights"></g>
         </g>
         <g id="ornaments"></g>
+        </g>
+        <path d="M397 440h91l-9 35h-72z" fill="#8d6145"/><path d="M393 438h99v9h-99z" fill="#ac7c58"/>
         <use href="#giftBox" x="284" y="419" width="91" height="74" style="color:#9f4847"/>
         <use href="#giftBox" x="344" y="448" width="67" height="55" style="color:#6d8b73"/>
         <use href="#giftBox" x="477" y="439" width="83" height="68" style="color:#b5744e"/>
@@ -95,7 +104,8 @@
         <path d="M112 432h24v18q-12 9-24 0Zm24 3h6q10 6-6 11" fill="#a6514e" stroke="#a6514e" stroke-width="3"/>
         <path d="M119 427q-7-7 0-14m9 14q-7-7 0-14" fill="none" stroke="#f8e2b6" stroke-opacity=".55" stroke-width="2"/>
         <g id="step-ladder" fill="none" stroke-linecap="round" aria-hidden="true"></g>
-        <g id="decorator" transform="translate(246 484)">
+        <g id="cottage-person"><g id="decorator" transform="translate(246 484)">
+        <g id="person-art">
           <ellipse cx="0" cy="2" rx="31" ry="7" fill="#241b18" opacity=".38"/>
           <path d="M-12-59 -15-7M11-59 13-7" stroke="#303c42" stroke-width="18" stroke-linecap="round"/>
           <path d="M-15-51 -17-11M10-51 11-13" stroke="#697078" stroke-width="2" opacity=".7"/>
@@ -116,18 +126,82 @@
           <path id="decorator-sleeve" d="M12-111Q32-95 24-78" stroke="#723640" stroke-width="17" stroke-linecap="round" fill="none"/>
           <path id="decorator-arm" d="M12-111Q32-95 24-78" stroke="#b96161" stroke-width="13" stroke-linecap="round" fill="none"/>
           <circle id="decorator-hand" cx="24" cy="-78" r="6" fill="#d49771"/>
-        </g>
+        </g></g></g>
         <g id="carried-ornament"></g>
         <path d="M0 0h900v555H0z" fill="url(#grain)" pointer-events="none"/>
+<g id="forest">
+  <path d="M0 0h900v555H0z" fill="url(#sky)"/>
+  <circle cx="673" cy="90" r="77" fill="url(#glow)" opacity=".45"/>
+  <circle cx="673" cy="90" r="32" fill="#f6e5be"/>
+  <path d="M0 320 132 153l79 93 83-114 157 177 114-129 103 116 105-126 127 147v130H0Z" fill="#526979"/>
+  <path d="m102 193 30-40 42 49-39-17zm154-8 38-53 53 60-44-20zm280 25 29-30 37 42-37-14zm202 0 35-40 43 50-44-20z" fill="#d5ded9" opacity=".72"/>
+  <path d="M0 347q145-39 290-5 155 40 279-2 148-40 331-15v230H0Z" fill="#b4c7cd"/>
+  <g id="grove"></g>
+  <path d="M0 428q147-43 339 1 157 40 311-9 117-34 250-12v147H0Z" fill="#d8e3dd"/>
+  <path d="M0 499q214-60 392-12 139 37 284-22 118-47 224-43v133H0Z" fill="#e7ebe2"/>
+  <path d="M424 555q190-50 234-84 44-34 99-42" stroke="#aebfc0" stroke-width="29" stroke-linecap="round" opacity=".65" fill="none"/>
+  <g transform="translate(692 250)">
+    <ellipse cx="97" cy="184" rx="103" ry="15" fill="#859da5" opacity=".55"/>
+    <path d="M13 78h168v100H13Z" fill="#855b48" stroke="#463a37" stroke-width="4"/>
+    <path d="M20 101h153m-153 20h153m-153 20h153m-153 20h153" stroke="#ae805c" stroke-width="3"/>
+    <path d="M135 27h24v54h-24z" fill="#73544a"/>
+    <path d="M-5 85 97 1l103 84Z" fill="#523b37" stroke="#493839" stroke-width="7" stroke-linejoin="round"/>
+    <path d="M-7 78 97-7l105 85" stroke="#eef0e4" stroke-width="13" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+    <path d="M69 178v-67h49v67Z" fill="#563c34" stroke="#d0a274" stroke-width="4"/>
+    <circle cx="109" cy="148" r="3" fill="#e9bc73"/>
+    <path d="M30 112h23v32H30zm103 0h26v32h-26Z" fill="#ffe09a" stroke="#483a36" stroke-width="5"/>
+    <path d="M41 111v34m-11-17h23m93-17v34m-13-17h26" stroke="#855b48" stroke-width="2"/>
+  </g>
+  <ellipse cx="373" cy="473" rx="124" ry="15" fill="#a8bcc0" opacity=".64"/>
+  <path d="M387 467v-21h26v21q-14 10-26 0Z" fill="#775843"/>
+  <ellipse cx="400" cy="446" rx="13" ry="5" fill="#dcba8a"/>
+  <path id="notch" d="M390 445l14-4-6 11Z" fill="#f7d395" opacity="0"/>
+  <g id="forest-trip">
+    <g id="forest-fall">
+      <use href="#woodland-pine"/>
+    </g>
+    <g id="forest-walker"><g transform="translate(305 472) scale(.92)">
+      <use href="#person-art"/>
+      <path d="M-22-162q0-23 22-23 19 3 24 22l-46 4Z" fill="#a64e56"/>
+      <path d="M-24-161q23 0 48-5" fill="none" stroke="#f0d2a2" stroke-width="7" stroke-linecap="round"/>
+      <circle cx="-4" cy="-184" r="7" fill="#f4d8ac"/>
+      <g id="axe-swing">
+        <path d="M24-78l62 38" stroke="#8a5738" stroke-width="7" stroke-linecap="round"/>
+        <path d="M79-50q15-4 27 5l-15 20-16-14Z" fill="#72828a" stroke="#35464f" stroke-width="2"/>
+        <path d="m103-45-14 17" stroke="#e2e9e7" stroke-width="2"/>
+      </g>
+    </g></g>
+  </g>
+  <g id="chips" fill="#efc484">
+    <path d="M392 435l-12-18 10 2zm9-2 9-21 5 7zm-3 7 19-8-3 8z"/>
+  </g>
+  <g id="forest-snow"></g>
+  <path d="M0 0h900v555H0z" fill="url(#grain)"/>
+</g>
       </svg>
-      <div class="scene-label"><span></span> INSIDE THE COTTAGE</div>
+      <div class="scene-label"><span></span> <b id="scene-name">THE PINE GROVE</b></div>
       <div class="spots" id="spots" aria-label="Ornament locations"></div>
       <button type="button" class="hotspot window-spot" data-action="snow" aria-label="Toggle falling snow" aria-pressed="true">❄</button>
       <button type="button" class="hotspot fire-spot" data-action="fire" aria-label="Toggle fireplace" aria-pressed="false">✦</button>
       <button type="button" class="hotspot gift-spot" data-action="gift" aria-label="Open a Christmas gift">◇</button>
     </section>
     <aside class="panel" aria-label="Christmas activities">
-      <p class="eyebrow chapter">01 / MAKE IT YOURS</p>
+<ol id="journey-steps" aria-label="Christmas Eve activities">
+  <li aria-current="step">01 <span>Cut</span></li>
+  <li>02 <span>Carry</span></li>
+  <li>03 <span>Set up</span></li>
+  <li>04 <span>Decorate</span></li>
+</ol>
+<div id="journey-panel">
+  <p class="eyebrow chapter" id="journey-chapter">01 / THE PINE GROVE</p>
+  <h2 id="journey-title">Find your tree</h2>
+  <p class="instruction" id="journey-instruction">There’s a little pine waiting in the clearing. Swing the axe three times to bring it down.</p>
+  <button type="button" class="open-gift" id="journey-action">Swing the axe</button>
+  <div class="progress-row" id="chop-count">0 / 3 chops</div>
+  <progress id="chop-progress" max="3" value="0" aria-label="Chops completed"></progress>
+</div>
+<div id="decorate-panel" hidden>
+<p class="eyebrow chapter">04 / MAKE IT YOURS</p>
       <h2>Trim the tree</h2>
       <p class="instruction">Pick a decoration and tap a gold dot to have the decorator hang it. Tap a placed ornament to take it down.</p>
       <div class="tray" role="group" aria-label="Choose an ornament">
@@ -139,7 +213,7 @@
       <div class="progress-row"><span id="count">0 / 12 ornaments</span><button type="button" id="undo" class="text-button" disabled>Undo</button></div>
       <progress id="progress" max="12" value="0" aria-label="Ornaments placed"></progress>
       <div class="panel-line"></div>
-      <p class="eyebrow chapter">02 / SET THE MOOD</p>
+      <p class="eyebrow chapter">SET THE MOOD</p>
       <div class="moods">
         <button type="button" data-action="lights" aria-pressed="false"><span aria-hidden="true">✧</span> Tree lights</button>
         <button type="button" data-action="star" aria-pressed="false"><span aria-hidden="true">★</span> Tree topper</button>
@@ -148,9 +222,10 @@
       </div>
       <div class="panel-line"></div>
       <button type="button" class="open-gift" data-action="gift"><span aria-hidden="true">◇</span> Open a gift <span aria-hidden="true">↗</span></button>
+      </div>
     </aside>
   </div>
-  <div class="scene-footer"><p id="status" aria-live="polite">The cottage is yours for the evening.</p><button type="button" id="reset" class="text-button">Reset the cottage</button></div>
+  <div class="scene-footer"><p id="status" aria-live="polite">A fresh snowfall has covered the path to the grove.</p><button type="button" id="reset" class="text-button">Start Christmas Eve over</button></div>
 </main>
 <footer><span>✦</span> A LITTLE WINTER WORLD <span>✦</span></footer>
 <dialog id="gift-dialog" aria-labelledby="gift-title">
